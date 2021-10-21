@@ -1,6 +1,8 @@
 :root {
-  --color-brand--1: #ffb545;
-  --color-brand--2: #00c46a;
+  --color-brand: #00c46a;
+
+  /* --color-brand--1: #ffb545;
+  --color-brand--2: #00c46a; */
 
   --color-dark--1: #2d3439;
   --color-dark--2: #42484d;
@@ -39,7 +41,7 @@ body {
 /* GENERAL */
 a:link,
 a:visited {
-  color: var(--color-brand--1);
+  color: var(--color-brand);
 }
 
 /* SIDEBAR */
@@ -89,10 +91,10 @@ a:visited {
   gap: 0.75rem 1.5rem;
 }
 .workout_running {
-  border-left: 5px solid var(--color-brand--2);
+  border-left: 5px solid var(--color-brand);
 }
 .workout_cycling {
-  border-left: 5px solid var(--color-brand--1);
+  border-left: 5px solid var(--color-brand);
 }
 
 .workout__title {
@@ -219,17 +221,17 @@ a:visited {
 }
 
 .running-popup .leaflet-popup-content-wrapper {
-  border-left: 5px solid var(--color-brand--2);
+  border-left: 5px solid var(--color-brand);
 }
 .cycling-popup .leaflet-popup-content-wrapper {
-  border-left: 5px solid var(--color-brand--1);
+  border-left: 5px solid var(--color-brand);
 }
 
 /* POPUP QUESTION */
 .popup-question {
   position: absolute;
   z-index: 20;
-  top: 30%;
+  top: 10%;
   left: 40%;
   border-radius: 20px;
   padding: 2rem;
@@ -242,9 +244,20 @@ a:visited {
 .transport {
   display: flex;
   justify-content: space-around;
-  padding-top: 2rem;
+  padding: 2rem 0;
 }
 
 .choose-transport {
   cursor: pointer;
+  text-align: center;
+}
+
+.choose-transport:hover {
+  transform: scale(1.2);
+  transition: all 1.5s;
+}
+
+.choose-transport img {
+  width: 5rem;
+  height: 5rem;
 }

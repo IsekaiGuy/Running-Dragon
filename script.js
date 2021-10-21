@@ -23,22 +23,30 @@ const form = document.querySelector(".form"),
   inputCadence = document.querySelector(".form__input_cadence"),
   inputElevation = document.querySelector(".form__input_elevation"),
   popupQuestion = document.querySelector(".popup-question"),
-  transport = document.querySelectorAll(".choose-transport");
+  chooseWalking = document.querySelector(".choose-transport__walk"),
+  chooseCycling = document.querySelector(".choose-transport__bycicle"),
+  sidebar = document.querySelector(".sidebar");
 
+let root = document.documentElement;
 let transportType = "";
 
 // POPUP QUESTION
-transport.forEach((transportType) => {
-  transportType.addEventListener("click", (e) => {
-    if (e.target.parentNode.className === "choose-transport__walk") {
-      transportType = "walk";
-    } else {
-      transportType = "bycicle";
-    }
-    popupQuestion.style.display = "none";
-    console.log(transportType);
-  });
+
+chooseWalking.addEventListener("click", () => {
+  transportType = "walking";
+  sidebar.firstElementChild.setAttribute("src", "logo.png");
+  popupQuestion.style.display = "none";
+  root.style.setProperty("--color-brand", "#00c46a");
 });
+
+chooseCycling.addEventListener("click", () => {
+  transportType = "cycling";
+  sidebar.firstElementChild.setAttribute("src", "bycicle-logo.png");
+  popupQuestion.style.display = "none";
+  root.style.setProperty("--color-brand", "#ffb545");
+});
+
+// MAP
 
 navigator.geolocation.getCurrentPosition(
   (position) => {
@@ -56,7 +64,6 @@ navigator.geolocation.getCurrentPosition(
 
     map.on("click", (mapEvent) => {
       coords = [mapEvent.latlng.lat, mapEvent.latlng.lng];
-      map.setView(coords, 13);
       L.marker(coords)
         .addTo(map)
         .bindPopup(
