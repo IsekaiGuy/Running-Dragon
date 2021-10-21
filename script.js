@@ -36,14 +36,18 @@ chooseWalking.addEventListener("click", () => {
   transportType = "walking";
   sidebar.firstElementChild.setAttribute("src", "logo.png");
   popupQuestion.style.display = "none";
-  root.style.setProperty("--color-brand", "#00c46a");
+  root.style.setProperty("--color-brand", "#00c46954");
+  form.classList.remove("hidden");
+  inputDistance.focus();
 });
 
 chooseCycling.addEventListener("click", () => {
   transportType = "cycling";
   sidebar.firstElementChild.setAttribute("src", "bycicle-logo.png");
   popupQuestion.style.display = "none";
-  root.style.setProperty("--color-brand", "#ffb545");
+  root.style.setProperty("--color-brand", "#ffb54577");
+  form.classList.remove("hidden");
+  inputDistance.focus();
 });
 
 // MAP
@@ -55,29 +59,32 @@ navigator.geolocation.getCurrentPosition(
     let coords = [latitude, longitude];
     const map = L.map("map").setView(coords, 13);
 
+    L.marker(coords).addTo(map).bindPopup("You are here!").openPopup();
     L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
-
-    L.marker(coords).addTo(map).bindPopup("You are here!").openPopup();
-
-    map.on("click", (mapEvent) => {
-      coords = [mapEvent.latlng.lat, mapEvent.latlng.lng];
-      L.marker(coords)
-        .addTo(map)
-        .bindPopup(
-          L.popup({
-            maxWidth: 250,
-            minWidth: 100,
-            className: "running-popup",
-          })
-        )
-        .setPopupContent("Hurry!")
-        .openPopup();
-    });
   },
   () => {
     alert("Could not get your position!");
   }
 );
+
+form.addEventListener("submit", () => {
+  L.marker(coords).addTo(map).bindPopup("You are here!").openPopup();
+
+  map.on("click", (mapEvent) => {
+    coords = [mapEvent.latlng.lat, mapEvent.latlng.lng];
+    L.marker(coords)
+      .addTo(map)
+      .bindPopup(
+        L.popup({
+          maxWidth: 250,
+          minWidth: 100,
+          className: "running-popup",
+        })
+      )
+      .setPopupContent("Hurry!")
+      .openPopup();
+  });
+});
