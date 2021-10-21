@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<svg
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:ns1="http://sozi.baierouge.fr"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    id="svg2"
+    viewBox="0 0 603.53 570.72"
+    version="1.1"
+  >
+  <g
+      id="layer1"
+      stroke="#000"
+      transform="translate(-107.94 -151.91)"
+      display="none"
+    >
+    <path
+        id="path3765"
+        stroke-linejoin="round"
+        d="m410 722.36-300-461.43l300-108.57 300 108.57z"
+        fill-opacity="0"
+        stroke-linecap="square"
+        stroke-width="1.0443"
+    />
+    <path
+        id="path3772"
+        stroke-linejoin="round"
+        d="m410 722.36-160-410 160-160 160 160z"
+        fill-opacity="0"
+        stroke-linecap="square"
+        stroke-width=".76265"
+    />
+    <path
+        id="path3774"
+        stroke-width="1px"
+        fill="none"
+        d="m410 152.36v570"
+    />
+    <path
+        id="path3782"
+        stroke-width="1px"
+        fill="none"
+        d="m110 261.36 140 51 160 10 160-10 140-51"
+    />
+  </g
+  >
+  <g
+      id="layer2"
+      transform="translate(-107.94 -151.91)"
+    >
+    <path
+        id="path3117"
+        stroke="#f17070"
+        fill="#f57b82"
+        d="m410 152.36-300.59 108.79 140.59 51.21 160-160"
+    />
+    <path
+        id="path3121"
+        stroke="#f17070"
+        fill="#f3666e"
+        d="m109.41 261.15 140.59 51.21 160 410-300.59-461.21"
+    />
+    <path
+        id="path3125"
+        stroke="#f17070"
+        fill="#f4626a"
+        d="m410 152.36v170l-160-10"
+    />
+    <path
+        id="path3129"
+        stroke="#f17070"
+        fill="#f3565f"
+        d="m410 322.36v400l-160-410 160 10"
+    />
+    <path
+        id="path3141"
+        stroke="#ed4c4c"
+        fill="#f13a45"
+        d="m410 322.36 160-10l-160 410v-400"
+    />
+    <path
+        id="path3149"
+        stroke="#ed4c4c"
+        fill="#f02531"
+        d="m709.63 261.5-139.63 50.86-160 410 299.63-460.86"
+    />
+    <path
+        id="path3819"
+        stroke="#ed4c4c"
+        fill="#f2454f"
+        d="m410 152.36v170l160-10-160-160"
+    />
+    <path
+        id="path3823"
+        stroke="#ed4c4c"
+        fill="#f1343f"
+        d="m410 152.36 160 160.79 140-51.68-300-109.11"
+    />
+  </g
+  >
+  <metadata
+    >
+    <rdf:RDF
+      >
+      <cc:Work
+        >
+        <dc:format
+          >image/svg+xml</dc:format
+        >
+        <dc:type
+            rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+        />
+        <cc:license
+            rdf:resource="http://creativecommons.org/licenses/publicdomain/"
+        />
+        <dc:publisher
+          >
+          <cc:Agent
+              rdf:about="http://openclipart.org/"
+            >
+            <dc:title
+              >Openclipart</dc:title
+            >
+          </cc:Agent
+          >
+        </dc:publisher
+        >
+        <dc:title
+          >Ruby</dc:title
+        >
+        <dc:date
+          >2013-04-12T07:54:10</dc:date
+        >
+        <dc:description
+        />
+        <dc:source
+          >https://openclipart.org/detail/176982/ruby-by-lfidnl-176982</dc:source
+        >
+        <dc:creator
+          >
+          <cc:Agent
+            >
+            <dc:title
+              >LFIdnl</dc:title
+            >
+          </cc:Agent
+          >
+        </dc:creator
+        >
+        <dc:subject
+          >
+          <rdf:Bag
+            >
+            <rdf:li
+              >gem</rdf:li
+            >
+            <rdf:li
+              >ruby</rdf:li
+            >
+          </rdf:Bag
+          >
+        </dc:subject
+        >
+      </cc:Work
+      >
+      <cc:License
+          rdf:about="http://creativecommons.org/licenses/publicdomain/"
+        >
+        <cc:permits
+            rdf:resource="http://creativecommons.org/ns#Reproduction"
+        />
+        <cc:permits
+            rdf:resource="http://creativecommons.org/ns#Distribution"
+        />
+        <cc:permits
+            rdf:resource="http://creativecommons.org/ns#DerivativeWorks"
+        />
+      </cc:License
+      >
+    </rdf:RDF
+    >
+  </metadata
+  >
+</svg
+>
