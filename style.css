@@ -60,6 +60,30 @@ a:visited {
   position: absolute;
   border-radius: 20px;
   box-shadow: 5px 5px 5px var(--color-dark--2);
+  transition: all 1s;
+}
+
+.sidebar_hidden {
+  width: 4rem;
+  height: 2rem;
+  transition: all 0.5s;
+  padding-bottom: 0.7rem;
+  padding-right: 0.2rem;
+}
+
+.logo-block {
+  text-align: center;
+  position: relative;
+}
+
+.logo-block__icon {
+  height: 1.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: -2rem 1rem 0 0;
+  filter: invert(55%) sepia(0%) saturate(1370%) hue-rotate(146deg)
+    brightness(91%) contrast(89%);
 }
 
 .logo {

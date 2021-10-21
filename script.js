@@ -9,6 +9,7 @@ const form = document.querySelector(".form"),
   inputElevation = document.querySelector(".form__input_elevation"),
   popupQuestion = document.querySelector(".popup-question"),
   images = popupQuestion.querySelectorAll("img"),
+  logoBlock = document.querySelector(".logo-block"),
   sidebar = document.querySelector(".sidebar"),
   root = document.documentElement;
 
@@ -26,34 +27,45 @@ class App {
       });
     });
 
+    document
+      .querySelector(".logo-block__icon")
+      .addEventListener("click", () => {
+        this._toggleSidebar();
+      });
+
     // SWITCH STYLE
     document.querySelector(".logo").addEventListener("click", (e) => {
+      this._toggleSidebar();
       this._setStyle(e.target.getAttribute("src"));
     });
 
     form.addEventListener("submit", this._newWorkout.bind(this));
   }
 
+  _toggleSidebar() {
+    sidebar.classList.toggle("sidebar_hidden");
+    logoBlock.lastElementChild.classList.toggle("form__row_hidden");
+    logoBlock.querySelector("h2").classList.toggle("form__row_hidden");
+  }
+
   _setStyle(type) {
     if (type === "walking" || type === "bycicle-logo.png") {
-      sidebar.firstElementChild.setAttribute("src", "logo.png");
-      sidebar.firstElementChild.setAttribute("alt", "walking");
-      popupQuestion.style.display = "none";
+      logoBlock.lastElementChild.setAttribute("src", "logo.png");
+      logoBlock.lastElementChild.setAttribute("alt", "walking");
       root.style.setProperty("--color-brand", "#00c46954");
-      form.classList.remove("hidden");
-      inputDistance.focus();
       inputElevation.parentElement.classList.add("form__row_hidden");
       inputCadence.parentElement.classList.remove("form__row_hidden");
     } else {
-      sidebar.firstElementChild.setAttribute("src", "bycicle-logo.png");
-      sidebar.firstElementChild.setAttribute("alt", "cycling");
-      popupQuestion.style.display = "none";
+      logoBlock.lastElementChild.setAttribute("src", "bycicle-logo.png");
+      logoBlock.lastElementChild.setAttribute("alt", "cycling");
       root.style.setProperty("--color-brand", "#ffb54577");
-      form.classList.remove("hidden");
-      inputDistance.focus();
       inputCadence.parentElement.classList.add("form__row_hidden");
       inputElevation.parentElement.classList.remove("form__row_hidden");
     }
+    popupQuestion.style.display = "none";
+    form.classList.remove("hidden");
+    inputDistance.focus();
+    this._toggleSidebar();
   }
 
   _getPosition() {
