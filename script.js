@@ -1,20 +1,5 @@
 "use strict";
 
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
 const form = document.querySelector(".form"),
   containerWorkouts = document.querySelector(".workouts"),
   inputType = document.querySelector(".form__input_type"),
@@ -33,11 +18,26 @@ class App {
 
   constructor() {
     this._getPosition();
+
+    images.forEach((image) => {
+      image.addEventListener("click", (e) => {
+        let transportType = e.target.getAttribute("alt");
+        this._setStyle(transportType);
+      });
+    });
+
+    // SWITCH STYLE
+    document.querySelector(".logo").addEventListener("click", (e) => {
+      this._setStyle(e.target.getAttribute("src"));
+    });
+
+    form.addEventListener("submit", this._newWorkout.bind(this));
   }
 
   _setStyle(type) {
-    if (type === "walking") {
+    if (type === "walking" || type === "bycicle-logo.png") {
       sidebar.firstElementChild.setAttribute("src", "logo.png");
+      sidebar.firstElementChild.setAttribute("alt", "walking");
       popupQuestion.style.display = "none";
       root.style.setProperty("--color-brand", "#00c46954");
       form.classList.remove("hidden");
@@ -46,6 +46,7 @@ class App {
       inputCadence.parentElement.classList.remove("form__row_hidden");
     } else {
       sidebar.firstElementChild.setAttribute("src", "bycicle-logo.png");
+      sidebar.firstElementChild.setAttribute("alt", "cycling");
       popupQuestion.style.display = "none";
       root.style.setProperty("--color-brand", "#ffb54577");
       form.classList.remove("hidden");
@@ -83,39 +84,27 @@ class App {
 
   _showForm() {}
 
-  _newWorkout() {}
+  _newWorkout(e) {
+    e.preventDefault();
+
+    inputDistance.value =
+      inputDuration.value =
+      inputElevation.value =
+      inputCadence.value =
+        "";
+
+    L.marker(this.#coords)
+      .addTo(this.#map)
+      .bindPopup(
+        L.popup({
+          maxWidth: 250,
+          minWidth: 100,
+          className: "running-popup",
+        })
+      )
+      .setPopupContent("Hurry!")
+      .openPopup();
+  }
 }
 
 const app = new App();
-
-// POPUP QUESTION
-images.forEach((image) => {
-  image.addEventListener("click", (e) => {
-    let transportType = e.target.getAttribute("alt");
-    app._setStyle(transportType);
-  });
-});
-
-// MAP
-
-// form.addEventListener("submit", (e) => {
-//   e.preventDefault();
-
-//   inputDistance.value =
-//     inputDuration.value =
-//     inputElevation.value =
-//     inputCadence.value =
-//       "";
-
-//   L.marker(coords)
-//     .addTo(map)
-//     .bindPopup(
-//       L.popup({
-//         maxWidth: 250,
-//         minWidth: 100,
-//         className: "running-popup",
-//       })
-//     )
-//     .setPopupContent("Hurry!")
-//     .openPopup();
-// });
