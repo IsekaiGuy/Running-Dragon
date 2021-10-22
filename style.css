@@ -239,6 +239,7 @@ a:visited {
   background-color: var(--color-light--1);
   width: 100vw;
   z-index: 1;
+  cursor: pointer;
 }
 
 /* Popup width is defined in JS using options */
@@ -275,7 +276,7 @@ a:visited {
   color: var(--color-dark--1);
 
   background-color: var(--color-light--3);
-  box-shadow: 5px 5px 5px var(--color-dark--2);
+  box-shadow: 5px 5px 15px var(--color-dark--2);
   text-shadow: 0.3px 0.3px var(--color-light--1);
 }
 

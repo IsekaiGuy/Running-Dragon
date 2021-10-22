@@ -53,9 +53,15 @@ class Cycling extends Workout {
 class App {
   #coords;
   #map;
+  #tstype;
+  #workouts = [];
 
   constructor() {
     this._getPosition();
+
+    // document.getElementsById("map").addEventListener("click", () => {
+    //   inputDistance.focus();
+    // });
 
     images.forEach((image) => {
       image.addEventListener("click", (e) => {
@@ -86,18 +92,20 @@ class App {
   }
 
   _setStyle(type) {
-    if (type === "walking" || type === "bycicle-logo.png") {
+    if (type === "running" || type === "bycicle-logo.png") {
       logoBlock.lastElementChild.setAttribute("src", "logo.png");
-      logoBlock.lastElementChild.setAttribute("alt", "walking");
+      logoBlock.lastElementChild.setAttribute("alt", "running");
       root.style.setProperty("--color-brand", "#00c46954");
       inputElevation.parentElement.classList.add("form__row_hidden");
       inputCadence.parentElement.classList.remove("form__row_hidden");
+      this.#tstype = "running";
     } else {
       logoBlock.lastElementChild.setAttribute("src", "bycicle-logo.png");
       logoBlock.lastElementChild.setAttribute("alt", "cycling");
       root.style.setProperty("--color-brand", "#ffb54577");
       inputCadence.parentElement.classList.add("form__row_hidden");
       inputElevation.parentElement.classList.remove("form__row_hidden");
+      this.#tstype = "cycling";
     }
     popupQuestion.style.display = "none";
     form.classList.remove("hidden");
@@ -117,10 +125,10 @@ class App {
     this.#coords = [latitude, longitude];
     this.#map = L.map("map").setView(this.#coords, 13);
 
-    L.marker(this.#coords)
-      .addTo(this.#map)
-      .bindPopup("You are here!")
-      .openPopup();
+    // L.marker(this.#coords)
+    //   .addTo(this.#map)
+    //   .bindPopup("You are here!")
+    //   .openPopup();
     L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -134,26 +142,71 @@ class App {
   _showForm() {}
 
   _newWorkout(e) {
+    const validInputs = (...inputs) =>
+      inputs.every((input) => Number.isFinite(input));
+    const allPositive = (...inputs) => inputs.every((input) => input > 0);
+
     e.preventDefault();
+
+    const distance = +inputDistance.value;
+    const duration = +inputDuration.value;
+    let workout;
+
+    if (this.#tstype === "running") {
+      const cadence = +inputCadence.value;
+
+      if (
+        !validInputs(duration, distance, cadence) ||
+        !allPositive(duration, distance, cadence)
+      )
+        return alert("Inputs have to be positive numbers!");
+
+      workout = new Running(this.#coords, distance, duration, cadence);
+    }
+
+    if (this.#tstype === "cycling") {
+      const elevation = +inputElevation.value;
+
+      if (
+        !validInputs(duration, distance, elevation) ||
+        !allPositive(duration, distance)
+      )
+        return alert("Inputs have to be positive numbers!");
+
+      workout = new Cycling(this.#coords, distance, duration, elevation);
+    }
+
+    this.#workouts.push(workout);
+    console.log(workout);
+
+    this._renderWorkoutMarker(workout);
+
+    this._renderWorkout(workout);
 
     inputDistance.value =
       inputDuration.value =
       inputElevation.value =
       inputCadence.value =
         "";
+  }
 
+  _renderWorkoutMarker(workout) {
     L.marker(this.#coords)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
           maxWidth: 250,
           minWidth: 100,
+          autoClose: false,
+          closeOnClick: false,
           className: "running-popup",
         })
       )
       .setPopupContent("Hurry!")
       .openPopup();
   }
+
+  _renderWorkout(workout) {}
 }
 
 const app = new App();

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="shortcut icon" type="image/png" href="/icon.png" />
+    <link rel="shortcut icon" type="image/png" href="logo.png" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
@@ -13,7 +13,7 @@
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
     <script defer src="script.js"></script>
-    <title>Running Dragon</title>
+    <title>Swifty Dragon</title>
   </head>
   <body>
     <!-- QUESTION POPUP -->
@@ -25,7 +25,7 @@
           <div class="choose-transport__walk">
             <picture>
               <source>
-              <img src="./logo.png" alt="walking">
+              <img src="./logo.png" alt="running">
             </picture>
             <h3>Running</h3>
           </div>
@@ -47,26 +47,20 @@
     <aside class="sidebar sidebar_hidden">
       <div class="logo-block">
         <img src="./compress-alt-solid.svg" alt="minimize-icon" class="logo-block__icon">
-        <h2 class="form__row_hidden">Hurry up, dragon!</h2>
+        <h2 class="form__row_hidden">Show your best, dragon!</h2>
         <img src="logo.png" alt="Logo" class="logo form__row_hidden" />
       </div>
       
       <ul class="workouts">
         <form class="form hidden">
-          <!-- <div class="form__row">
-            <label class="form__label">Type</label>
-            <select class="form__input form__input_type">
-              <option value="running">Running</option>
-              <option value="cycling">Cycling</option>
-            </select>
-          </div> -->
           <div class="form__row">
             <label class="form__label">Distance</label>
-            <input class="form__input form__input_distance" placeholder="km" />
+            <input required class="form__input form__input_distance" placeholder="km" />
           </div>
           <div class="form__row">
             <label class="form__label">Duration</label>
             <input
+              required
               class="form__input form__input_duration"
               placeholder="min"
             />
