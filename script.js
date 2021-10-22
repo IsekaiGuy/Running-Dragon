@@ -27,6 +27,7 @@ const form = document.querySelector(".form"),
   logoBlock = document.querySelector(".logo-block"),
   sidebar = document.querySelector(".sidebar"),
   logo = document.querySelector(".logo"),
+  buttons = document.querySelectorAll(".form__btn"),
   root = document.documentElement;
 
 class Workout {
@@ -121,6 +122,7 @@ class App {
     sidebar.classList.toggle("sidebar_hidden");
     logoBlock.lastElementChild.classList.toggle("form__row_hidden");
     logoBlock.querySelector("h2").classList.toggle("form__row_hidden");
+    buttons.forEach((el) => el.classList.toggle("form__row_hidden"));
   }
 
   _setStyle(type) {
@@ -209,31 +211,22 @@ class App {
 
     this._renderWorkout(workout);
 
+    // REMOVING FROM LIST AND MAP
     document.querySelector(".workout__xmark").addEventListener("click", (e) => {
-      // this.#workouts = this.#workouts.filter(
-      //   (work) => work.id === e.target.parentElement.dataset.id
-      // );
-      // console.log(e.target.parentElement.dataset.id);
-      // console.log(this.#workouts.id);
-
       this.#markers.forEach((marker) => {
         if (marker.id == e.target.parentElement.dataset.id) {
           this.#map.removeLayer(marker);
         }
       });
       e.target.parentElement.remove();
-      // this.#workouts.forEach((work) => console.log(work.id));
-
-      // const workoutEl = e.target.closest(".workout");
-      // if (!workoutEl) return;
-
-      // const workout = this.#workouts.find(
-      //   (work) => work.id == workoutEl.dataset.id
-      // );
-
-      // this.#map.closePopup();
-      // this.#map.closeTooltip();
     });
+    //////////////////////////////////////////////
+
+    // REMOVING FROM MAP
+    document
+      .querySelector(".form__btn_clear-map")
+      .addEventListener("click", this._clearMap.bind(this));
+    //////////////////////////////////////////////
 
     inputDistance.value =
       inputDuration.value =
@@ -309,6 +302,7 @@ class App {
     form.insertAdjacentHTML("afterend", html);
   }
 
+  ////////MOVING TO POPUP ONCLICK IN THE LIST
   _moveToPopup(e) {
     const workoutEl = e.target.closest(".workout");
     if (!workoutEl) return;
@@ -323,6 +317,12 @@ class App {
         duration: 1,
       },
     });
+  }
+  //////////////////////////////////////////////
+
+  // CLEAR MAP
+  _clearMap() {
+    this.#markers.forEach((marker) => this.#map.removeLayer(marker));
   }
 }
 
