@@ -26,6 +26,7 @@ const form = document.querySelector(".form"),
   images = popupQuestion.querySelectorAll("img"),
   logoBlock = document.querySelector(".logo-block"),
   sidebar = document.querySelector(".sidebar"),
+  logo = document.querySelector(".logo"),
   root = document.documentElement;
 
 class Workout {
@@ -40,11 +41,7 @@ class Workout {
   }
 
   _setDescription() {
-    this.description = `${document
-      .querySelector(".logo")
-      .getAttribute("alt")[0]
-      .toUpperCase()}${document
-      .querySelector(".logo")
+    this.description = `${logo.getAttribute("alt")[0].toUpperCase()}${logo
       .getAttribute("alt")
       .slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDay()}`;
   }
@@ -85,9 +82,17 @@ class App {
   constructor() {
     this._getPosition();
 
-    // document.getElementsById("map").addEventListener("click", () => {
-    //   inputDistance.focus();
-    // });
+    containerWorkouts.addEventListener("click", this._moveToPopup.bind(this));
+
+    document.getElementById("map").addEventListener("click", () => {
+      if (!inputDistance.value) {
+        inputDistance.focus();
+      } else if (!inputDuration.value) {
+        inputDuration.focus();
+      } else {
+        inputDistance.focus();
+      }
+    });
 
     images.forEach((image) => {
       image.addEventListener("click", (e) => {
@@ -103,7 +108,7 @@ class App {
       });
 
     // SWITCH STYLE
-    document.querySelector(".logo").addEventListener("click", (e) => {
+    logo.addEventListener("click", (e) => {
       this._toggleSidebar();
       this._setStyle(e.target.getAttribute("src"));
     });
@@ -151,10 +156,6 @@ class App {
     this.#coords = [latitude, longitude];
     this.#map = L.map("map").setView(this.#coords, 13);
 
-    // L.marker(this.#coords)
-    //   .addTo(this.#map)
-    //   .bindPopup("You are here!")
-    //   .openPopup();
     L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -274,6 +275,22 @@ class App {
     `;
 
     form.insertAdjacentHTML("afterend", html);
+  }
+
+  _moveToPopup(e) {
+    const workoutEl = e.target.closest(".workout");
+    if (!workoutEl) return;
+
+    const workout = this.#workouts.find(
+      (work) => work.id == workoutEl.dataset.id
+    );
+
+    this.#map.setView(workout.coords, 13, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
   }
 }
 
