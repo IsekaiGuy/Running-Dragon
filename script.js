@@ -1,5 +1,20 @@
 "use strict";
 
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 const form = document.querySelector(".form"),
   containerWorkouts = document.querySelector(".workouts"),
   inputType = document.querySelector(".form__input_type"),
@@ -18,9 +33,20 @@ class Workout {
   id = parseInt((Date.now() * Math.random()) / 500);
 
   constructor(coords, distance, duration) {
-    (this.coords = coords), //[lat, lng]
-      (this.distance = distance), //km
-      (this.duration = duration); //mins
+    this.coords = coords; //[lat, lng]
+    this.distance = distance; //km
+    this.duration = duration; //mins
+    this._setDescription();
+  }
+
+  _setDescription() {
+    this.description = `${document
+      .querySelector(".logo")
+      .getAttribute("alt")[0]
+      .toUpperCase()}${document
+      .querySelector(".logo")
+      .getAttribute("alt")
+      .slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDay()}`;
   }
 }
 
@@ -139,8 +165,6 @@ class App {
     });
   }
 
-  _showForm() {}
-
   _newWorkout(e) {
     const validInputs = (...inputs) =>
       inputs.every((input) => Number.isFinite(input));
@@ -202,11 +226,55 @@ class App {
           className: "running-popup",
         })
       )
-      .setPopupContent("Hurry!")
+      .setPopupContent(
+        `${this.#tstype === "running" ? "🏃‍♂️" : "🚴‍♀️"} ${workout.description}`
+      )
       .openPopup();
   }
 
-  _renderWorkout(workout) {}
+  _renderWorkout(workout) {
+    const html = `
+    <li class="workout" data-id="${workout.id}">
+      <h2 class="workout__title">${workout.description}</h2>
+      <div class="workout__details">
+        <span class="workout__icon">${
+          this.#tstype === "running" ? "🏃‍♂️" : "🚴‍♀️"
+        }</span>
+        <span class="workout__value">${workout.distance}</span>
+        <span class="workout__unit">km</span>
+      </div>
+      <div class="workout__details">
+        <span class="workout__icon">⏱</span>
+        <span class="workout__value">${workout.duration}</span>
+        <span class="workout__unit">min</span>
+      </div>
+      <div class="workout__details">
+        <span class="workout__icon">⚡️</span>
+        <span class="workout__value">${
+          this.#tstype === "running"
+            ? workout.pace.toFixed(1)
+            : workout.speed.toFixed(1)
+        }</span>
+        <span class="workout__unit">${
+          this.#tstype === "running" ? "min/km" : "km/h"
+        }</span>
+      </div>
+      <div class="workout__details">
+        <span class="workout__icon">${
+          this.#tstype === "running" ? "🦶🏼" : "⛰"
+        }</span>
+        <span class="workout__value">${
+          this.#tstype === "running" ? workout.cadence : workout.elevation
+        }</span>
+        <span class="workout__unit">${
+          this.#tstype === "running" ? "spm" : "m"
+        }</span>
+      </div>
+    </li>
+    `;
+
+    form.insertAdjacentHTML("afterend", html);
+  }
 }
 
 const app = new App();
