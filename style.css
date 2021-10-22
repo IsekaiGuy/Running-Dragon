@@ -243,10 +243,6 @@ a:visited {
   background-color: #fff;
 }
 
-.form__btn_submit {
-  display: none;
-}
-
 .twitter-link:link,
 .twitter-link:visited {
   color: var(--color-light--1);

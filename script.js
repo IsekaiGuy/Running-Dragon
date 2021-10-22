@@ -76,11 +76,14 @@ class Cycling extends Workout {
 }
 
 class App {
+  #allCoords = [];
   #coords;
   #map;
   #tstype;
+  #polyline;
   #workouts = [];
   #markers = [];
+  #calcDistance = [];
 
   constructor() {
     this._getPosition();
@@ -170,6 +173,7 @@ class App {
 
     this.#map.on("click", (mapEvent) => {
       this.#coords = [mapEvent.latlng.lat, mapEvent.latlng.lng];
+      this.#allCoords.push(this.#coords);
     });
   }
 
@@ -266,6 +270,27 @@ class App {
       )
       .openPopup();
 
+    // DRAWING RED LINE BETWEEN POINTS
+    if (this.#allCoords.length >= 2) {
+      this.#polyline = L.polyline(this.#allCoords, { color: "red" }).addTo(
+        this.#map
+      );
+      this.#map.fitBounds(this.#polyline.getBounds());
+
+      // CALCULATING DISTANCE
+      let dist = this._getDistance(
+        this.#coords,
+        this.#allCoords[this.#allCoords.length - 2]
+      );
+
+      this.#calcDistance.push(dist);
+      let sum = Math.floor(
+        this.#calcDistance.reduce((sum, current) => sum + current / 1000)
+      );
+      console.log(sum);
+    }
+    ////////////////////////////////////
+
     marker.id = workout.id;
     this.#markers.push(marker);
   }
@@ -330,13 +355,44 @@ class App {
         duration: 1,
       },
     });
+    console.log(document.getElementById("distance"));
   }
+
   //////////////////////////////////////////////
 
   // CLEAR MAP FUNCTION
   _clearMap() {
     this.#markers.forEach((marker) => this.#map.removeLayer(marker));
     this.#markers = [];
+
+    this.#map.removeLayer(this.#polyline);
+    this.#polyline.remove(this.#map);
+    this.#allCoords = [];
+  }
+
+  ///////////////////////////////////////////////
+
+  // CALCULATE DISTANCE
+  _toRadian(degree) {
+    return (degree * Math.PI) / 180;
+  }
+
+  _getDistance(origin, destination) {
+    // return distance in meters
+    var lon1 = this._toRadian(origin[1]),
+      lat1 = this._toRadian(origin[0]),
+      lon2 = this._toRadian(destination[1]),
+      lat2 = this._toRadian(destination[0]);
+
+    var deltaLat = lat2 - lat1;
+    var deltaLon = lon2 - lon1;
+
+    var a =
+      Math.pow(Math.sin(deltaLat / 2), 2) +
+      Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
+    var c = 2 * Math.asin(Math.sqrt(a));
+    var EARTH_RADIUS = 6371;
+    return c * EARTH_RADIUS * 1000;
   }
 }
 
