@@ -175,14 +175,14 @@ a:visited {
   background-color: var(--color-brand);
   color: var(--main-text-color);
   text-shadow: 0.5px 0.5px var(--color-light--2);
-  padding: 1.5rem 2rem 16vh 2rem;
+  padding: 1.5rem 2rem 1rem 2rem;
   margin-bottom: 1.75rem;
 
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
 
-  height: 9.25rem;
+  height: fit-content;
   transition: all 0.5s, transform 1ms;
   box-shadow: 0px 1px 5px gray;
 }
@@ -195,8 +195,21 @@ a:visited {
   opacity: 0;
 }
 
+.form__row_btns {
+  display: flex;
+  justify-content: space-around;
+}
+
 .form__btn {
   display: block;
+  padding: 0.5rem 1rem;
+  border: 0.5px solid rgb(94, 167, 11);
+  border-radius: 5px;
+  font-size: 1vw;
+  font-family: inherit;
+  background-color: white;
+  box-shadow: 0px 0.5px 5px gray;
+  cursor: pointer;
 }
 
 .form__row {

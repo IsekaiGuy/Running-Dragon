@@ -28,6 +28,7 @@ const form = document.querySelector(".form"),
   sidebar = document.querySelector(".sidebar"),
   logo = document.querySelector(".logo"),
   buttons = document.querySelectorAll(".form__btn"),
+  closingIcon = document.querySelector(".logo-block__icon"),
   root = document.documentElement;
 
 class Workout {
@@ -103,11 +104,9 @@ class App {
       });
     });
 
-    document
-      .querySelector(".logo-block__icon")
-      .addEventListener("click", () => {
-        this._toggleSidebar();
-      });
+    closingIcon.addEventListener("click", () => {
+      this._toggleSidebar();
+    });
 
     // SWITCH STYLE
     logo.addEventListener("click", (e) => {
@@ -123,6 +122,11 @@ class App {
     logoBlock.lastElementChild.classList.toggle("form__row_hidden");
     logoBlock.querySelector("h2").classList.toggle("form__row_hidden");
     buttons.forEach((el) => el.classList.toggle("form__row_hidden"));
+    if (sidebar.classList.contains("sidebar_hidden")) {
+      closingIcon.setAttribute("src", "arrows-svgrepo.svg");
+    } else {
+      closingIcon.setAttribute("src", "compress-alt-solid.svg");
+    }
   }
 
   _setStyle(type) {
@@ -216,17 +220,27 @@ class App {
       this.#markers.forEach((marker) => {
         if (marker.id == e.target.parentElement.dataset.id) {
           this.#map.removeLayer(marker);
+          this.#markers = this.#markers.filter((el) => el.id !== marker.id);
         }
       });
       e.target.parentElement.remove();
     });
     //////////////////////////////////////////////
 
-    // REMOVING FROM MAP
+    // CLEAR MAP LISTENER
     document
       .querySelector(".form__btn_clear-map")
       .addEventListener("click", this._clearMap.bind(this));
     //////////////////////////////////////////////
+
+    // CLEAR LIST LISTENER
+    document
+      .querySelector(".form__btn_clear-list")
+      .addEventListener("click", () => {
+        document.querySelectorAll(".workout").forEach((el) => el.remove());
+      });
+
+    ////////////////////////////////////////////////
 
     inputDistance.value =
       inputDuration.value =
@@ -254,7 +268,6 @@ class App {
 
     marker.id = workout.id;
     this.#markers.push(marker);
-    console.log(this.#markers);
   }
 
   _renderWorkout(workout) {
@@ -320,9 +333,10 @@ class App {
   }
   //////////////////////////////////////////////
 
-  // CLEAR MAP
+  // CLEAR MAP FUNCTION
   _clearMap() {
     this.#markers.forEach((marker) => this.#map.removeLayer(marker));
+    this.#markers = [];
   }
 }
 
