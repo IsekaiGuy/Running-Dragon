@@ -95,6 +95,7 @@ a:visited {
   margin: -2rem 1rem 0 0;
   filter: invert(55%) sepia(0%) saturate(1370%) hue-rotate(146deg)
     brightness(91%) contrast(89%);
+  cursor: pointer;
 }
 
 .logo {
@@ -166,7 +167,7 @@ a:visited {
   background-color: var(--color-brand);
   color: var(--main-text-color);
   text-shadow: 0.5px 0.5px var(--color-light--2);
-  padding: 1.5rem 2rem 11rem 2rem;
+  padding: 1.5rem 2rem 16vh 2rem;
   margin-bottom: 1.75rem;
 
   display: flex;
