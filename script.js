@@ -45,7 +45,7 @@ class Workout {
   _setDescription() {
     this.description = `${logo.getAttribute("alt")[0].toUpperCase()}${logo
       .getAttribute("alt")
-      .slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDay()}`;
+      .slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`;
   }
 }
 
@@ -83,7 +83,6 @@ class App {
   #polyline;
   #workouts = [];
   #markers = [];
-  #calcDistance = [];
 
   constructor() {
     this._getPosition();
@@ -174,6 +173,54 @@ class App {
     this.#map.on("click", (mapEvent) => {
       this.#coords = [mapEvent.latlng.lat, mapEvent.latlng.lng];
       this.#allCoords.push(this.#coords);
+
+      let marker = L.marker(this.#coords)
+        .addTo(this.#map)
+        .bindPopup(
+          L.popup({
+            maxWidth: 250,
+            minWidth: 100,
+            autoClose: false,
+            closeOnClick: false,
+            className: "running-popup",
+          })
+        )
+        .setPopupContent(
+          `${this.#tstype === "running" ? "🏃‍♂️" : "🚴‍♀️"} ${logo
+            .getAttribute("alt")[0]
+            .toUpperCase()}${logo.getAttribute("alt").slice(1)} on ${
+            months[new Date().getMonth()]
+          } ${new Date().getDate()}`
+        )
+        .openPopup();
+
+      let code = parseInt((Date.now() * Math.random()) / 500);
+      marker.id = code;
+      let iconClose = document.querySelector(".leaflet-popup-close-button");
+      iconClose.id = code;
+
+      iconClose.addEventListener("click", () => {
+        this.#markers.forEach((marker) => {
+          if (iconClose.id == marker.id) {
+            this.#map.removeLayer(marker);
+          }
+        });
+      });
+
+      if (
+        this.#allCoords.length >= 2 &&
+        document.querySelector(".form__checkbox").checked
+      ) {
+        let newCoords = [
+          this.#allCoords[this.#allCoords.length - 2],
+          this.#allCoords[this.#allCoords.length - 1],
+        ];
+        this.#polyline = L.polyline(newCoords, { color: "red" }).addTo(
+          this.#map
+        );
+        this.#map.fitBounds(this.#polyline.getBounds());
+      }
+      this.#markers.push(marker);
     });
   }
 
@@ -213,10 +260,6 @@ class App {
     }
 
     this.#workouts.push(workout);
-    console.log(workout);
-
-    this._renderWorkoutMarker(workout);
-
     this._renderWorkout(workout);
 
     // REMOVING FROM LIST AND MAP
@@ -229,13 +272,13 @@ class App {
       });
       e.target.parentElement.remove();
     });
-    //////////////////////////////////////////////
 
     // CLEAR MAP LISTENER
     document
       .querySelector(".form__btn_clear-map")
-      .addEventListener("click", this._clearMap.bind(this));
-    //////////////////////////////////////////////
+      .addEventListener("click", () => {
+        this._clearMap();
+      });
 
     // CLEAR LIST LISTENER
     document
@@ -251,48 +294,6 @@ class App {
       inputElevation.value =
       inputCadence.value =
         "";
-  }
-
-  _renderWorkoutMarker(workout) {
-    let marker = L.marker(this.#coords)
-      .addTo(this.#map)
-      .bindPopup(
-        L.popup({
-          maxWidth: 250,
-          minWidth: 100,
-          autoClose: false,
-          closeOnClick: false,
-          className: "running-popup",
-        })
-      )
-      .setPopupContent(
-        `${this.#tstype === "running" ? "🏃‍♂️" : "🚴‍♀️"} ${workout.description}`
-      )
-      .openPopup();
-
-    // DRAWING RED LINE BETWEEN POINTS
-    if (this.#allCoords.length >= 2) {
-      this.#polyline = L.polyline(this.#allCoords, { color: "red" }).addTo(
-        this.#map
-      );
-      this.#map.fitBounds(this.#polyline.getBounds());
-
-      // CALCULATING DISTANCE
-      let dist = this._getDistance(
-        this.#coords,
-        this.#allCoords[this.#allCoords.length - 2]
-      );
-
-      this.#calcDistance.push(dist);
-      let sum = Math.floor(
-        this.#calcDistance.reduce((sum, current) => sum + current / 1000)
-      );
-      console.log(sum);
-    }
-    ////////////////////////////////////
-
-    marker.id = workout.id;
-    this.#markers.push(marker);
   }
 
   _renderWorkout(workout) {
@@ -320,7 +321,7 @@ class App {
             : workout.speed.toFixed(1)
         }</span>
         <span class="workout__unit">${
-          this.#tstype === "running" ? "min/km" : "km/h"
+          this.#tstype === "running" ? "km/min" : "km/h"
         }</span>
       </div>
       <div class="workout__details">
@@ -355,10 +356,7 @@ class App {
         duration: 1,
       },
     });
-    console.log(document.getElementById("distance"));
   }
-
-  //////////////////////////////////////////////
 
   // CLEAR MAP FUNCTION
   _clearMap() {
@@ -368,31 +366,6 @@ class App {
     this.#map.removeLayer(this.#polyline);
     this.#polyline.remove(this.#map);
     this.#allCoords = [];
-  }
-
-  ///////////////////////////////////////////////
-
-  // CALCULATE DISTANCE
-  _toRadian(degree) {
-    return (degree * Math.PI) / 180;
-  }
-
-  _getDistance(origin, destination) {
-    // return distance in meters
-    var lon1 = this._toRadian(origin[1]),
-      lat1 = this._toRadian(origin[0]),
-      lon2 = this._toRadian(destination[1]),
-      lat2 = this._toRadian(destination[0]);
-
-    var deltaLat = lat2 - lat1;
-    var deltaLon = lon2 - lon1;
-
-    var a =
-      Math.pow(Math.sin(deltaLat / 2), 2) +
-      Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
-    var c = 2 * Math.asin(Math.sqrt(a));
-    var EARTH_RADIUS = 6371;
-    return c * EARTH_RADIUS * 1000;
   }
 }
 

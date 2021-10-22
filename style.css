@@ -195,9 +195,16 @@ a:visited {
   opacity: 0;
 }
 
-.form__row_btns {
-  display: flex;
-  justify-content: space-around;
+.form__btn_clear-map {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.form__btn_clear-list {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
 }
 
 .form__btn {
