@@ -78,6 +78,7 @@ class App {
   #map;
   #tstype;
   #workouts = [];
+  #markers = [];
 
   constructor() {
     this._getPosition();
@@ -208,6 +209,32 @@ class App {
 
     this._renderWorkout(workout);
 
+    document.querySelector(".workout__xmark").addEventListener("click", (e) => {
+      // this.#workouts = this.#workouts.filter(
+      //   (work) => work.id === e.target.parentElement.dataset.id
+      // );
+      // console.log(e.target.parentElement.dataset.id);
+      // console.log(this.#workouts.id);
+
+      this.#markers.forEach((marker) => {
+        if (marker.id == e.target.parentElement.dataset.id) {
+          this.#map.removeLayer(marker);
+        }
+      });
+      e.target.parentElement.remove();
+      // this.#workouts.forEach((work) => console.log(work.id));
+
+      // const workoutEl = e.target.closest(".workout");
+      // if (!workoutEl) return;
+
+      // const workout = this.#workouts.find(
+      //   (work) => work.id == workoutEl.dataset.id
+      // );
+
+      // this.#map.closePopup();
+      // this.#map.closeTooltip();
+    });
+
     inputDistance.value =
       inputDuration.value =
       inputElevation.value =
@@ -216,7 +243,7 @@ class App {
   }
 
   _renderWorkoutMarker(workout) {
-    L.marker(this.#coords)
+    let marker = L.marker(this.#coords)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -231,11 +258,16 @@ class App {
         `${this.#tstype === "running" ? "🏃‍♂️" : "🚴‍♀️"} ${workout.description}`
       )
       .openPopup();
+
+    marker.id = workout.id;
+    this.#markers.push(marker);
+    console.log(this.#markers);
   }
 
   _renderWorkout(workout) {
     const html = `
     <li class="workout" data-id="${workout.id}">
+    <img class="workout__xmark" src="xmark.svg" alt="xmark">
       <h2 class="workout__title">${workout.description}</h2>
       <div class="workout__details">
         <span class="workout__icon">${
