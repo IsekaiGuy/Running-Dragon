@@ -77,6 +77,7 @@ class Cycling extends Workout {
 
 class App {
   #allCoords = [];
+  #allPolylines = [];
   #coords;
   #map;
   #tstype;
@@ -125,22 +126,22 @@ class App {
     logoBlock.querySelector("h2").classList.toggle("form__row_hidden");
     buttons.forEach((el) => el.classList.toggle("form__row_hidden"));
     if (sidebar.classList.contains("sidebar_hidden")) {
-      closingIcon.setAttribute("src", "arrows-svgrepo.svg");
+      closingIcon.setAttribute("src", "images/arrows-svgrepo.svg");
     } else {
-      closingIcon.setAttribute("src", "compress-alt-solid.svg");
+      closingIcon.setAttribute("src", "images/compress-alt-solid.svg");
     }
   }
 
   _setStyle(type) {
-    if (type === "running" || type === "bycicle-logo.png") {
-      logoBlock.lastElementChild.setAttribute("src", "logo.png");
+    if (type === "running" || type === "images/bycicle-logo.png") {
+      logoBlock.lastElementChild.setAttribute("src", "images/logo.png");
       logoBlock.lastElementChild.setAttribute("alt", "running");
       root.style.setProperty("--color-brand", "#00c46954");
       inputElevation.parentElement.classList.add("form__row_hidden");
       inputCadence.parentElement.classList.remove("form__row_hidden");
       this.#tstype = "running";
     } else {
-      logoBlock.lastElementChild.setAttribute("src", "bycicle-logo.png");
+      logoBlock.lastElementChild.setAttribute("src", "images/bycicle-logo.png");
       logoBlock.lastElementChild.setAttribute("alt", "cycling");
       root.style.setProperty("--color-brand", "#ffb54577");
       inputCadence.parentElement.classList.add("form__row_hidden");
@@ -174,7 +175,12 @@ class App {
       this.#coords = [mapEvent.latlng.lat, mapEvent.latlng.lng];
       this.#allCoords.push(this.#coords);
 
-      let marker = L.marker(this.#coords)
+      const fireIcon = L.icon({
+        iconUrl: "images/fire.png",
+        iconSize: [30, 30],
+      });
+
+      let marker = L.marker(this.#coords, { icon: fireIcon })
         .addTo(this.#map)
         .bindPopup(
           L.popup({
@@ -194,18 +200,31 @@ class App {
         )
         .openPopup();
 
-      let code = parseInt((Date.now() * Math.random()) / 500);
-      marker.id = code;
-      let iconClose = document.querySelector(".leaflet-popup-close-button");
-      iconClose.id = code;
-
-      iconClose.addEventListener("click", () => {
-        this.#markers.forEach((marker) => {
-          if (iconClose.id == marker.id) {
-            this.#map.removeLayer(marker);
-          }
+      document.querySelectorAll(".leaflet-marker-icon").forEach((icon) => {
+        icon.addEventListener("click", (e) => {
+          e.target.remove();
+          this.#map.removeLayer(this.#polyline);
         });
       });
+
+      // CLEAR MAP LISTENER
+      document
+        .querySelector(".form__btn_clear-map")
+        .addEventListener("click", () => {
+          this._clearMap();
+        });
+      // let code = parseInt((Date.now() * Math.random()) / 500);
+      // marker.id = code;
+      // let iconClose = document.querySelector(".leaflet-popup-close-button");
+      // iconClose.id = code;
+
+      // iconClose.addEventListener("click", () => {
+      //   this.#markers.forEach((marker) => {
+      //     if (iconClose.id == marker.id) {
+      //       this.#map.removeLayer(marker);
+      //     }
+      //   });
+      // });
 
       if (
         this.#allCoords.length >= 2 &&
@@ -215,10 +234,11 @@ class App {
           this.#allCoords[this.#allCoords.length - 2],
           this.#allCoords[this.#allCoords.length - 1],
         ];
-        this.#polyline = L.polyline(newCoords, { color: "red" }).addTo(
+        this.#polyline = L.polyline(newCoords, { color: "orangered" }).addTo(
           this.#map
         );
         this.#map.fitBounds(this.#polyline.getBounds());
+        this.#allPolylines.push(this.#polyline);
       }
       this.#markers.push(marker);
     });
@@ -273,13 +293,6 @@ class App {
       e.target.parentElement.remove();
     });
 
-    // CLEAR MAP LISTENER
-    document
-      .querySelector(".form__btn_clear-map")
-      .addEventListener("click", () => {
-        this._clearMap();
-      });
-
     // CLEAR LIST LISTENER
     document
       .querySelector(".form__btn_clear-list")
@@ -299,7 +312,7 @@ class App {
   _renderWorkout(workout) {
     const html = `
     <li class="workout" data-id="${workout.id}">
-    <img class="workout__xmark" src="xmark.svg" alt="xmark">
+    <img class="workout__xmark" src="images/xmark.svg" alt="xmark">
       <h2 class="workout__title">${workout.description}</h2>
       <div class="workout__details">
         <span class="workout__icon">${
@@ -363,8 +376,14 @@ class App {
     this.#markers.forEach((marker) => this.#map.removeLayer(marker));
     this.#markers = [];
 
-    this.#map.removeLayer(this.#polyline);
-    this.#polyline.remove(this.#map);
+    if (this.#allPolylines) {
+      this.#allPolylines.forEach((poly) => this.#map.removeLayer(poly));
+    }
+
+    if (this.#polyline) {
+      this.#map.removeLayer(this.#polyline);
+      this.#polyline.remove(this.#map);
+    }
     this.#allCoords = [];
   }
 }
