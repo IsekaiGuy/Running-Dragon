@@ -9,5 +9,5 @@
 ## About Project
 ![Alt text](/images/Sweaty-dragon.png?raw=true "Dragon")
 <p>
-A one-page food delivery website.
+Workout log for runners/cyclists.
 </p>
